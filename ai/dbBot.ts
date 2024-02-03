@@ -15,7 +15,7 @@ const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY,
 });
 
-const userQuestion = "Where does Bob Davis do his dry cleaning?";
+const userQuestion = "What is the name of the customer with id 1?";
 
 async function executeSqlQuery(sqlQuery: string) {
 	try {
@@ -64,7 +64,7 @@ async function executeSqlQuery(sqlQuery: string) {
 	};
 
 	fs.appendFileSync(
-		"scripts/results.json",
+		"ai/results.json",
 		JSON.stringify(responseJson, null, 4) + "\n"
 	);
 

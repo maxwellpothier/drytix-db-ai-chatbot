@@ -7,7 +7,7 @@
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint",
-		"bot": "tsx scripts/dbBot.ts"
+		"bot": "tsx ai/dbBot.ts"
 	},
 	"dependencies": {
 		"dotenv": "^16.4.1",
