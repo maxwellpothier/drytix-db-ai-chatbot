@@ -35,6 +35,12 @@ const databaseSchema = endent`
 	);
 `;
 
+const convertBotToNaturalLanguagePrompt = endent`
+	After helping the user with their sql query, they will need help understanding the response. 
+	Please provide a natural language response to the user's question. 
+	Do not respond with sql anymore.
+`;
+
 export const responseToNaturalLanguagePrompt = (
 	query: string,
 	response: string
@@ -44,6 +50,20 @@ export const responseToNaturalLanguagePrompt = (
 		The user is not able to descipher what this information means. Based on the sql query and the database schema,
 		give the user a natural language response to their question.
 	`;
+};
+
+export const convertBotToNaturalLanguage = () => {
+	messages.push({
+		role: "system",
+		content: convertBotToNaturalLanguagePrompt,
+	});
+};
+
+export const appendUserMessageToBot = (message: string) => {
+	messages.push({
+		role: "user",
+		content: message,
+	});
 };
 
 export const messages: ChatCompletionMessageParam[] = [
