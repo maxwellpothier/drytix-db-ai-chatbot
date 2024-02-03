@@ -14,8 +14,10 @@
 		"endent": "^2.1.0",
 		"next": "14.1.0",
 		"openai": "^4.26.0",
+		"postgres": "^3.4.3",
 		"react": "^18",
-		"react-dom": "^18"
+		"react-dom": "^18",
+		"supabase": "^1.136.3"
 	},
 	"devDependencies": {
 		"@types/node": "^20",
