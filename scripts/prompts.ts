@@ -75,8 +75,4 @@ export const messages: ChatCompletionMessageParam[] = [
 		role: "system",
 		content: `The database schema is as follows: ${databaseSchema}`,
 	},
-	{
-		role: "user",
-		content: "Who is the first customer?",
-	},
 ];

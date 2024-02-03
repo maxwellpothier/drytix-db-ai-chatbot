@@ -2,6 +2,7 @@ import {exit} from "process";
 import sql from "./db";
 import OpenAI from "openai";
 import * as dotenv from "dotenv";
+import fs from "fs";
 import {
 	appendUserMessageToBot,
 	convertBotToNaturalLanguage,
@@ -14,6 +15,8 @@ const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY,
 });
 
+const userQuestion = "Where does Bob Davis do his dry cleaning?";
+
 async function executeSqlQuery(sqlQuery: string) {
 	try {
 		const result = await sql.unsafe(sqlQuery);
@@ -24,13 +27,17 @@ async function executeSqlQuery(sqlQuery: string) {
 }
 
 (async () => {
+	appendUserMessageToBot(userQuestion);
+
+	console.log("user question: ", userQuestion);
+
 	const completion = await openai.chat.completions.create({
 		messages: messages,
 		model: "gpt-4-1106-preview",
 	});
 
 	const sqlQuery = completion.choices[0].message.content?.slice(6, -3);
-	console.log("sql query generated.");
+	console.log("sql query generated: ", sqlQuery);
 	const result = await executeSqlQuery(sqlQuery.trim());
 	console.log("got response from db.");
 
@@ -46,7 +53,20 @@ async function executeSqlQuery(sqlQuery: string) {
 		model: "gpt-4-1106-preview",
 	});
 
-	console.log(completion2.choices[0].message.content);
+	const naturalLanguageResponse = completion2.choices[0].message.content;
+
+	console.log(naturalLanguageResponse);
+
+	const responseJson = {
+		question: userQuestion,
+		sqlQuery: sqlQuery,
+		response: naturalLanguageResponse,
+	};
+
+	fs.appendFileSync(
+		"scripts/results.json",
+		JSON.stringify(responseJson, null, 4) + "\n"
+	);
 
 	exit();
 })();

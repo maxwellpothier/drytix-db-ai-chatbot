@@ -1,0 +1,5 @@
+{
+	"question": "Where does Bob Davis do his dry cleaning?",
+	"sqlQuery": "\nSELECT Cleaner.business_name\nFROM Cleaner\nJOIN Job ON Cleaner.id = Job.cleaner_id\nJOIN Customer ON Job.customer_id = Customer.id\nWHERE Customer.name = 'Bob Davis';\n",
+	"response": "Bob Davis does his dry cleaning at two different places: \"Spotless\" and \"ShinySurfaces\"."
+}
