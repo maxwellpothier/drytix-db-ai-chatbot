@@ -8,3 +8,8 @@
     "sqlQuery": "\nSELECT business_name FROM Cleaner\nJOIN Job ON Cleaner.id = Job.cleaner_id\nJOIN Customer ON Customer.id = Job.customer_id\nWHERE Customer.name = 'Bob Davis';\n",
     "response": "Bob Davis does his dry cleaning at \"Spotless\" and \"ShinySurfaces\"."
 }
+{
+    "question": "What is the name of the customer with id 1?",
+    "sqlQuery": "\nSELECT name FROM Customer WHERE id = 1;\n",
+    "response": "The name of the customer with id 1 is Alice Johnson."
+}

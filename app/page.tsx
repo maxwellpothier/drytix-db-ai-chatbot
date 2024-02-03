@@ -1,5 +1,4 @@
 "use client";
-import {answerUserQuestion} from "@/ai/dbBot";
 import {useState} from "react";
 
 export default function Home() {
@@ -7,8 +6,7 @@ export default function Home() {
 	const [submittedValue, setSubmittedValue] = useState("");
 
 	const handleSubmit = async () => {
-		const answer = await answerUserQuestion(inputValue);
-		setSubmittedValue(answer);
+		setSubmittedValue(inputValue);
 	};
 
 	return (
