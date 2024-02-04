@@ -15,23 +15,33 @@ const databaseSchema = endent`
 		id bigint primary key generated always as identity,
 		business_name text,
 		contact_name text,
-		contact_email text,
-		password text,
-		phone_number text
+		contact_email text not null,
+		password text not null,
+		phone_number text not null
 	);
-
+	
 	create table Customer (
 		id bigint primary key generated always as identity,
 		name text,
-		email text,
-		password text,
-		phone_number text
+		email text not null,
+		password text not null,
+		phone_number text not null
 	);
-
+	
+	create table Item (
+		id bigint primary key generated always as identity,
+		name text check (name in ('Shirt', 'Pants', 'Dress', 'Suit')) not null,
+		status text check (status in ('Not started', 'In progress', 'Finished')) not null
+	);
+	
 	create table Job (
 		id bigint primary key generated always as identity,
-		cleaner_id bigint references Cleaner(id),
-		customer_id bigint references Customer(id)
+		cleaner_id bigint references Cleaner(id) not null,
+		customer_id bigint references Customer(id) not null,
+		item_id bigint references Item(id) not null,
+		start_time timestamptz default current_timestamp,
+		is_finished boolean default false,
+		cost numeric(10, 2) not null
 	);
 `;
 

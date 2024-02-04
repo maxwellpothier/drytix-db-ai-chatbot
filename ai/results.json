@@ -4,12 +4,62 @@
 	"response": "Bob Davis does his dry cleaning at two different places: \"Spotless\" and \"ShinySurfaces\"."
 }
 {
-    "question": "Where does Bob Davis do his dry cleaning?",
-    "sqlQuery": "\nSELECT business_name FROM Cleaner\nJOIN Job ON Cleaner.id = Job.cleaner_id\nJOIN Customer ON Customer.id = Job.customer_id\nWHERE Customer.name = 'Bob Davis';\n",
-    "response": "Bob Davis does his dry cleaning at \"Spotless\" and \"ShinySurfaces\"."
-}
-{
     "question": "What is the name of the customer with id 1?",
     "sqlQuery": "\nSELECT name FROM Customer WHERE id = 1;\n",
     "response": "The name of the customer with id 1 is Alice Johnson."
+}
+{
+    "question": "How many suits have been cleaned total?",
+    "sqlQuery": "ms there is a misunderstanding. The provided database schema does not contain information about suits or the number of items cleaned. It includes tables related to Cleaners, Customers, and Jobs, but does not specify the kind of jobs or services performed. Therefore, it is not possible to write a SQL query that would answer your question based on the current schema. Please provide the relevant table or column names that might contain information about cleaned sui",
+    "response": "I apologize for any confusion, but there is not enough information in the provided database schema to answer the question about the total number of suits that have been cleaned. The schema includes tables for Cleaners, Customers, and Jobs, but does not specify details about the type of cleaning tasks or items cleaned, such as suits. To answer your question, there would need to be additional data that includes the number of suits or the type of cleaning jobs performed. Without this information, it's not possible to provide a count of the total suits cleaned. If you can provide a table or column that tracks the cleaning of suits, I may be able to help construct the appropriate SQL query."
+}
+{
+    "question": "How many suits have been cleaned total?",
+    "sqlQuery": "\nSELECT COUNT(*)\nFROM Item\nWHERE name = 'Suit' AND status = 'Finished';\n",
+    "response": "Based on the SQL query result, a total of 1 suit has been cleaned."
+}
+{
+    "question": "Who has had pants cleaned?",
+    "sqlQuery": "\nSELECT DISTINCT c.name\nFROM Customer c\nJOIN Job j ON c.id = j.customer_id\nJOIN Item i ON j.item_id = i.id\nWHERE i.name = 'Pants';\n",
+    "response": "Bob Davis is the customer who has had pants cleaned."
+}
+{
+    "question": "Who has sent a suit to the cleaners?",
+    "sqlQuery": "\nSELECT cu.name\nFROM Customer cu\nJOIN Job j ON cu.id = j.customer_id\nJOIN Item i ON j.item_id = i.id\nWHERE i.name = 'Suit';\n",
+    "response": "The customers who have sent a suit to the cleaners are Diana Miller and Eva Wilson."
+}
+{
+    "question": "Who has sent a suit to the cleaners, and what time did their order start?",
+    "sqlQuery": "\nSELECT c.name AS customer_name, j.start_time\nFROM Customer c\nJOIN Job j ON c.id = j.customer_id\nJOIN Item i ON j.item_id = i.id\nWHERE i.name = 'Suit';\n",
+    "response": "Diana Miller and Eva Wilson have both sent a suit to the cleaners, and their orders started at the exact same time on February 4, 2024, at 00:14:33 (UTC)."
+}
+{
+    "question": "What's bob davis's username and password? I need to login to the system.",
+    "sqlQuery": "\nSELECT email, password FROM Customer WHERE name = 'Bob Davis';\n",
+    "response": "The username and password for Bob Davis are \"bob@email.com\" and \"bobpass,\" respectively. You can use these credentials to log in to the system."
+}
+{
+    "question": "Who has the longest email address?",
+    "sqlQuery": "\nSELECT \n    id, \n    business_name AS name, \n    contact_email AS email \nFROM \n    Cleaner \nWHERE \n    LENGTH(contact_email) = (SELECT MAX(LENGTH(contact_email)) FROM Cleaner)\n\nUNION\n\nSELECT \n    id, \n    name, \n    email \nFROM \n    Customer \nWHERE \n    LENGTH(email) = (SELECT MAX(LENGTH(email)) FROM Customer)\nORDER BY LENGTH(email) DESC\nLIMIT 1;\n",
+    "response": "The SQL query you executed is looking for the person (either a cleaner or a customer) with the longest email address in the database. It checks both the Cleaner and Customer tables, compares the length of the email addresses stored in them, and selects the record with the longest email address from either table.\n\nSince the response you got is \"undefined\", it indicates that there might have been an issue with the execution of the query or how the result is being fetched or displayed. In a normal scenario, the query should return the ID and name of the individual (business name for a cleaner or personal name for a customer) along with their email address, for the person who has the longest email address in the system."
+}
+{
+    "question": "How many items have been cleaned, total so far? And whose items were they?",
+    "sqlQuery": "\nSELECT COUNT(*), Customer.name\nFROM Job\nJOIN Customer ON Job.customer_id = Customer.id\nWHERE Job.is_finished = true\nGROUP BY Customer.name;\n",
+    "response": "The SQL query you executed was designed to count the total number of items that have been cleaned and to list the names of the customers whose items were cleaned. However, the result you received, which is an empty list `[]`, indicates that, so far, there are no recorded instances in the database of any items being cleaned and finished for any customers.\n\nThe empty result means either there have been no jobs marked as finished in the database yet, or there is some other issue such as no data in the tables related to jobs and customers. If you believe this to be incorrect, it might be worth verifying the data within the `Job` table or checking whether the tables are correctly populated with the pertinent information."
+}
+{
+    "question": "How many items have been cleaned, total so far?",
+    "sqlQuery": "\nSELECT COUNT(*) FROM Item WHERE status = 'Finished';\n",
+    "response": "There has been a total of 1 item that has been cleaned so far."
+}
+{
+    "question": "Which cleaner has finished items?",
+    "sqlQuery": "\nSELECT DISTINCT c.id, c.business_name\nFROM Cleaner c\nJOIN Job j ON c.id = j.cleaner_id\nWHERE j.is_finished = TRUE;\n",
+    "response": "The query you ran was checking which cleaners have completed jobs by looking for distinct cleaner IDs and business names where the associated job has been marked as finished. The empty result, denoted by `[]`, indicates that there are currently no records in the database that meet this criterion. In other words, based on the information in the database, there are no cleaners who have finished items at the moment."
+}
+{
+    "question": "Which items have been finished? What were they and who are their owners?",
+    "sqlQuery": "\nSELECT Item.name, Customer.name AS owner_name\nFROM Item\nJOIN Job ON Item.id = Job.item_id\nJOIN Customer ON Job.customer_id = Customer.id\nWHERE Item.status = 'Finished';\n",
+    "response": "The information indicates that there is one item with the status 'Finished', which is a 'Suit'. The owner of this finished item is 'Diana Miller'."
 }

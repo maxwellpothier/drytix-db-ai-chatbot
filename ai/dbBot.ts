@@ -15,7 +15,8 @@ const openai = new OpenAI({
 	apiKey: process.env.OPENAI_API_KEY,
 });
 
-const userQuestion = "What is the name of the customer with id 1?";
+const userQuestion =
+	"Which items have been finished? What were they and who are their owners?";
 
 async function executeSqlQuery(sqlQuery: string) {
 	try {
